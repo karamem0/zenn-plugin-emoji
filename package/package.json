@@ -1,0 +1,35 @@
+{
+  "name": "@karamem0/zenn-plugin-emoji",
+  "version": "0.0.0",
+  "type": "module",
+  "main": "dist/index.js",
+  "bin": {
+    "zenn-emoji": "dist/index.js"
+  },
+  "author": "karamem0",
+  "license": "MIT",
+  "description": "Zenn の記事のアイキャッチ絵文字を内容から生成するためのプラグインです。",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/karamem0/zenn-plugin-emoji"
+  },
+  "scripts": {
+    "build": "tsc && babel src --extensions '.ts' --out-dir dist --copy-files"
+  },
+  "dependencies": {
+    "commander": "^12.1.0",
+    "dotenv": "^16.4.5",
+    "openai": "^4.56.0"
+  },
+  "devDependencies": {
+    "@babel/cli": "^7.24.8",
+    "@babel/preset-typescript": "^7.24.7",
+    "@eslint/js": "^9.9.1",
+    "@stylistic/eslint-plugin": "^2.6.4",
+    "babel-preset-minify": "^0.5.2",
+    "eslint": "^9.9.1",
+    "globals": "^15.9.0",
+    "typescript": "^5.5.4",
+    "typescript-eslint": "^8.2.0"
+  }
+}

@@ -1,0 +1,12 @@
+{
+  "name": "zenn-plugin-emoji-sample",
+  "version": "0.0.0",
+  "type": "module",
+  "scripts": {
+    "zenn:emoji": "zenn-emoji articles/*"
+  },
+  "dependencies": {
+    "zenn-cli": "^0.1.155",
+    "zenn-plugin-emoji": "file:../package"
+  }
+}
