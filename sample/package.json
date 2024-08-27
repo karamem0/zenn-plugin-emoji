@@ -1,5 +1,5 @@
 {
-  "name": "zenn-plugin-emoji-sample",
+  "name": "@karamem0/zenn-plugin-emoji-sample",
   "version": "0.0.0",
   "type": "module",
   "scripts": {
