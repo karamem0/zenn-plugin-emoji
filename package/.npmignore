@@ -1,0 +1,10 @@
+# VSCode settings
+.vscode/
+
+# Source files
+src/
+
+# Configuration files
+babel.config.cjs
+eslint.config.mjs
+tsconfig.json

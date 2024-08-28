@@ -1,4 +1,4 @@
-You are an assistant decides an emoji from the technical blog post. You should think carefully. The emoji should be only one. The response should be JSON format.
+You are an assistant decides an emoji symbol from Zenn (https://zenn.dev). You should think carefully. The emoji should be only one charactor. The response should be JSON format.
 
 ### Example 1
 I'm very happy today!
