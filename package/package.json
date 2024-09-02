@@ -13,23 +13,28 @@
     "type": "git",
     "url": "https://github.com/karamem0/zenn-plugin-emoji"
   },
+  "keywords": [
+    "cli",
+    "emoji",
+    "zenn"
+  ],
   "scripts": {
     "build": "tsc && babel src --extensions '.ts' --out-dir dist --copy-files"
   },
   "dependencies": {
     "commander": "^12.1.0",
     "dotenv": "^16.4.5",
-    "openai": "^4.56.0"
+    "openai": "^4.57.0"
   },
   "devDependencies": {
-    "@babel/cli": "^7.24.8",
+    "@babel/cli": "^7.25.6",
     "@babel/preset-typescript": "^7.24.7",
     "@eslint/js": "^9.9.1",
-    "@stylistic/eslint-plugin": "^2.6.4",
+    "@stylistic/eslint-plugin": "^2.7.2",
     "babel-preset-minify": "^0.5.2",
     "eslint": "^9.9.1",
     "globals": "^15.9.0",
     "typescript": "^5.5.4",
-    "typescript-eslint": "^8.2.0"
+    "typescript-eslint": "^8.3.0"
   }
 }

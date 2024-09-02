@@ -36,29 +36,35 @@ program
         endpoint: process.env.AZURE_OPENAI_ENDPOINT
       });
     files.forEach(async (file) => {
-      const text = await fs.promises.readFile(file, 'utf-8');
-      const completion = await openai.chat.completions.create(
-        {
-          messages: [
-            {
-              role: 'system',
-              content: prompt
-            },
-            {
-              role: 'user',
-              content: text
+      try {
+        const text = await fs.promises.readFile(file, 'utf-8');
+        const completion = await openai.chat.completions.create(
+          {
+            messages: [
+              {
+                role: 'system',
+                content: prompt
+              },
+              {
+                role: 'user',
+                content: text
+              }
+            ],
+            model: process.env.OPENAI_MODEL_NAME,
+            response_format: {
+              type: 'json_object'
             }
-          ],
-          model: process.env.OPENAI_MODEL_NAME,
-          response_format: {
-            type: 'json_object'
           }
+        );
+        const content = JSON.parse(completion.choices[0].message.content);
+        console.log(`${file}: ${content.emoji}`);
+        if (option.update) {
+          await fs.promises.writeFile(file, text.replace(/emoji: ".*"/u, `emoji: "${content.emoji}"`), 'utf-8');
         }
-      );
-      const content = JSON.parse(completion.choices[0].message.content);
-      console.log(`${file}: ${content.emoji}`);
-      if (option.update) {
-        await fs.promises.writeFile(file, text.replace(/emoji: ".*"/u, `emoji: "${content.emoji}"`), 'utf-8');
+      } catch (error) {
+        if (error instanceof Error) {
+          console.error(`${file}: ${error.message}`);
+        }
       }
     });
   })

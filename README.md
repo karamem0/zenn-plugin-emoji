@@ -7,8 +7,7 @@
 
 ## 使用方法
 
-> [!NOTE]
-> このプラグインでは OpenAI の GPT を使用しますが環境は提供していません。OpenAI または Azure OpenAI Service の環境をあらかじめご用意ください。
+*このプラグインでは OpenAI の GPT を使用しますが環境は提供していません。OpenAI または Azure OpenAI Service の環境をあらかじめご用意ください。*
 
 1. パッケージをインストールします。
 
