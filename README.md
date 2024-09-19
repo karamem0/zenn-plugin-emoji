@@ -17,29 +17,45 @@
 
 1. `.env` または `.env.local` ファイルを作成し以下の環境変数を設定します。
 
-    |キー名|説明|OpenAI|Azure OpenAI Service|
-    |-|-|-|-|
-    |OPENAI_API_KEY|OpenAI の API キー|Y||
-    |OPENAI_API_VERSION|OpenAI の API バージョン (`2024-05-01` など)||Y|
-    |OPENAI_MODEL_NAME|OpenAI の場合はモデル名、Azure OpenAI Serviceの場合はデプロイ名|Y|Y|
-    |AZURE_OPENAI_API_KEY|Azure OpenAI Service の API キー||Y|
-    |AZURE_OPENAI_ENDPOINT|Azure OpenAI Service のエンドポイント||Y|
+    |キー名|説明|OpenAI|Azure OpenAI Service (API キー)|Azure OpenAI Service (Entra ID アプリケーション)|
+    |-|-|-|-|-|
+    |OPENAI_API_KEY|OpenAI の API キー|X|||
+    |OPENAI_API_VERSION|OpenAI の API バージョン (`2024-05-01` など)||X|X|
+    |OPENAI_MODEL_NAME|OpenAI の場合はモデル名、Azure OpenAI Serviceの場合はデプロイ名|X|X|X|
+    |AZURE_OPENAI_API_KEY|Azure OpenAI Service の API キー||X||
+    |AZURE_OPENAI_ENDPOINT|Azure OpenAI Service のエンドポイント||X|X|
+    |AZURE_CLIENT_ID|Entra ID アプリケーションのクライアント ID|||X|
+    |AZURE_CLIENT_SECRET|Entra ID アプリケーションのクライアント シークレット|||X|
+    |AZURE_TENANT_ID|Entra ID アプリケーションのテナント ID|||X|
 
-    **OpenAI の例**
+    - **OpenAI の例**
 
-    ```
-    OPENAI_API_KEY=<your-openai-api-key>
-    OPENAI_MODEL_NAME=<your-openai-model-name>
-    ```
+        ```
+        OPENAI_API_KEY=<your-openai-api-key>
+        OPENAI_MODEL_NAME=<your-openai-model-name>
+        ```
 
-    **Azure OpenAI Service の例**
+    - **Azure OpenAI Service (API キー) の例**
 
-    ```
-    AZURE_OPENAI_ENDPOINT=https://<your-aoai-resoure-name>.openai.azure.com
-    AZURE_OPENAI_API_KEY=<your-aoai-api-key>
-    OPENAI_API_VERSION=<your-aoai-api-version>
-    OPENAI_MODEL_NAME=<your-aoai-deployment-name>
-    ```
+        ```
+        AZURE_OPENAI_API_KEY=<your-aoai-api-key>
+        AZURE_OPENAI_ENDPOINT=https://<your-aoai-resoure-name>.openai.azure.com
+        OPENAI_API_VERSION=<your-aoai-api-version>
+        OPENAI_MODEL_NAME=<your-aoai-deployment-name>
+        ```
+
+    - **Azure OpenAI Service (Entra ID アプリケーション) の例**
+
+        ```
+        AZURE_CLIENT_ID=<your-app-client-id>
+        AZURE_CLIENT_SECRET=<your-app-client-secret>
+        AZURE_TENANT_ID=<your-app-tenant-id>
+        AZURE_OPENAI_ENDPOINT=https://<your-aoai-resoure-name>.openai.azure.com
+        OPENAI_API_VERSION=<your-aoai-api-version>
+        OPENAI_MODEL_NAME=<your-aoai-deployment-name>
+        ```
+
+        Entra ID アプリケーションに対して **Cognitive Services OpenAI User** のロールの割り当てが必要です。
 
 1. コマンドを実行します。
 
