@@ -90,7 +90,7 @@ program
           }
         );
         const content = JSON.parse(completion.choices[0].message.content);
-        console.log(`${file}: ${content.emoji}`);
+        console.log(`${file}: ${content.emoji} ${content.reason}`);
         if (option.update) {
           await fs.promises.writeFile(file, text.replace(/emoji: ".*"/u, `emoji: "${content.emoji}"`), 'utf-8');
         }
