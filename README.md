@@ -9,7 +9,7 @@
 
 *このプラグインでは OpenAI の GPT を使用しますが環境は提供していません。OpenAI または Azure OpenAI Service の環境をあらかじめご用意ください。*
 
-1. パッケージをインストールします。
+1. Zenn の GitHub 連携を行っているリポジトリにパッケージをインストールします。
 
     ```
     npm install @karamem0/zenn-plugin-emoji

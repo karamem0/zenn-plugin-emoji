@@ -1,10 +1,17 @@
+# GitHub settings
+.github/
+
 # VSCode settings
 .vscode/
 
 # Source files
 src/
 
+# Test files
+test/
+
 # Configuration files
+.editorconfig
 babel.config.cjs
 eslint.config.mjs
 tsconfig.json

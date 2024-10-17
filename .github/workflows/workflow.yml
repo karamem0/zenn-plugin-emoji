@@ -25,27 +25,19 @@ jobs:
           always-auth: true
       - name: Update package.json
         run: npm version ${{vars.BUILD_VERSION}}-beta.${{github.run_number}} --no-git-tag-version
-        working-directory: package
       - name: Restore source
         run: npm ci
-        working-directory: package
       - name: Audit source
         run: npm audit --omit=dev
-        working-directory: package
       - name: Build source
         run: npm run build
-        working-directory: package
-      - name: Copy README.md
-        run: cp -p README.md package/README.md
       - name: Create .npmrc
         run: |
           touch .npmrc
           echo "//npm.pkg.github.com/:_authToken=${{secrets.GITHUB_TOKEN}}" >> .npmrc
           echo "@karamem0:registry=https://npm.pkg.github.com/" >> .npmrc
-        working-directory: package
       - name: Publish source
         run: npm publish
-        working-directory: package
         env:
           NODE_AUTH_TOKEN: ${{secrets.GITHUB_TOKEN}}
   publish-npm:
@@ -62,20 +54,13 @@ jobs:
           always-auth: true
       - name: Update package.json
         run: npm version ${{vars.BUILD_VERSION}} --no-git-tag-version
-        working-directory: package
       - name: Restore source
         run: npm ci
-        working-directory: package
       - name: Audit source
         run: npm audit --omit=dev
-        working-directory: package
       - name: Build source
         run: npm run build
-        working-directory: package
-      - name: Copy README.md
-        run: cp -p README.md package/README.md
       - name: Publish source
         run: npm publish --provenance --access=public
-        working-directory: package
         env:
           NODE_AUTH_TOKEN: ${{secrets.NODE_AUTH_TOKEN}}
