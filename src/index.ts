@@ -21,6 +21,11 @@ dotenv.config({ path: ['.env', '.env.local'] });
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
+interface Option {
+  force: boolean,
+  update: boolean
+}
+
 function createOpenAI(): OpenAI {
   if (process.env.OPENAI_API_KEY) {
     return new OpenAI({
@@ -64,13 +69,17 @@ function createOpenAI(): OpenAI {
 program
   .version(process.env.npm_package_version)
   .argument('<files...>', 'The target files')
+  .option('-f, --force', 'Force to update the target files')
   .option('-u, --update', 'Update the target files')
-  .action(async (files: string[], option: { update: boolean }) => {
+  .action(async (files: string[], option: Option) => {
     const prompt = await fs.promises.readFile(path.join(__dirname, 'skills/skprompt.txt'), 'utf-8');
     const openai = createOpenAI();
     files.forEach(async (file) => {
       try {
         const text = await fs.promises.readFile(file, 'utf-8');
+        if (!option.force && /emoji: ".+"/u.test(text)) {
+          return;
+        }
         const completion = await openai.chat.completions.create(
           {
             messages: [
