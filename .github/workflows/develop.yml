@@ -4,9 +4,8 @@ on:
       - develop
 
 permissions:
-  id-token: write
   packages: write
-
+      
 jobs:
   publish:
     name: Publish
