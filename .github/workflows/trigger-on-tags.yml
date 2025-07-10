@@ -1,0 +1,20 @@
+name: Trigger on tags
+
+on:
+  push:
+    tags:
+      - v*.*.*
+
+permissions:
+  contents: write
+  id-token: write
+
+jobs:
+  deploy-to-npm:
+    name: Deploy to npm
+    uses: ./.github/workflows/deploy-to-npm.yml
+    secrets: inherit
+  deploy-to-github-release:
+    name: Deploy to GitHub Release
+    uses: ./.github/workflows/deploy-to-github-release.yml
+    secrets: inherit

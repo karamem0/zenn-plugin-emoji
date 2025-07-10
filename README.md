@@ -1,6 +1,6 @@
 # zenn-plugin-emoji
 
-[![.github/workflows/develop.yml](https://github.com/karamem0/zenn-plugin-emoji/actions/workflows/develop.yml/badge.svg)](https://github.com/karamem0/zenn-plugin-emoji/actions/workflows/develop.yml)
+[![.github/workflows/trigger-on-main.yml](https://github.com/karamem0/zenn-plugin-emoji/actions/workflows/trigger-on-main.yml/badge.svg)](https://github.com/karamem0/zenn-plugin-emoji/actions/workflows/trigger-on-main.yml)
 [![License](https://img.shields.io/github/license/karamem0/zenn-plugin-emoji.svg)](https://github.com/karamem0/zenn-plugin-emoji/blob/main/LICENSE)
 
 [Zenn](https://zenn.dev/) のアイキャッチ絵文字を記事の内容から生成するためのプラグインです。
@@ -105,3 +105,4 @@ articles/ebd6b7f4e118f3.md: 💻 プログラミングというテーマから�
 |`-u`|`--update`|対象のファイルを更新します。|
 |`-l`|`--use-last-exec`|前回の実行結果を使用します。|
 |`-f`|`--force`|アイキャッチ絵文字が設定されているファイルの更新を強制します。|
+|`-q`|`--quiet`|メッセージの表示を抑制します。|

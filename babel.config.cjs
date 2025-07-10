@@ -1,5 +1,5 @@
 //
-// Copyright (c) 2024 karamem0
+// Copyright (c) 2024-2025 karamem0
 //
 // This software is released under the MIT License.
 //

@@ -1,7 +1,7 @@
 #!/usr/bin/env node
 
 //
-// Copyright (c) 2024 karamem0
+// Copyright (c) 2024-2025 karamem0
 //
 // This software is released under the MIT License.
 //
@@ -16,7 +16,7 @@ import { fileURLToPath } from 'url';
 import path from 'path';
 import { program } from 'commander';
 
-dotenv.config({ path: ['.env', '.env.local'] });
+dotenv.config({ path: [ '.env', '.env.local' ], quiet: true });
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -29,7 +29,8 @@ interface ChatResponse {
 interface CommandOptions {
   force?: boolean,
   update?: boolean,
-  useLastExec?: boolean
+  useLastExec?: boolean,
+  quiet?: boolean
 }
 
 interface LastExecLogItem {
@@ -47,9 +48,9 @@ function createOpenAI(): OpenAI {
     });
   }
   if (
-    process.env.AZURE_OPENAI_API_KEY
-    && process.env.AZURE_OPENAI_ENDPOINT
-    && process.env.OPENAI_API_VERSION
+    process.env.AZURE_OPENAI_API_KEY &&
+    process.env.AZURE_OPENAI_ENDPOINT &&
+    process.env.OPENAI_API_VERSION
   ) {
     return new AzureOpenAI({
       apiKey: process.env.AZURE_OPENAI_API_KEY,
@@ -58,11 +59,11 @@ function createOpenAI(): OpenAI {
     });
   }
   if (
-    process.env.AZURE_CLIENT_ID
-    && process.env.AZURE_CLIENT_SECRET
-    && process.env.AZURE_OPENAI_ENDPOINT
-    && process.env.AZURE_TENANT_ID
-    && process.env.OPENAI_API_VERSION
+    process.env.AZURE_CLIENT_ID &&
+    process.env.AZURE_CLIENT_SECRET &&
+    process.env.AZURE_OPENAI_ENDPOINT &&
+    process.env.AZURE_TENANT_ID &&
+    process.env.OPENAI_API_VERSION
   ) {
     return new AzureOpenAI({
       azureADTokenProvider: getBearerTokenProvider(
@@ -81,8 +82,15 @@ function createOpenAI(): OpenAI {
 }
 
 async function callOpenAI(text: string): Promise<ChatResponse> {
-  if (!openai) throw new Error('OpenAI is not initialized');
-  if (!text) throw new Error('Text is required');
+  if (openai == null) {
+    throw new Error('OpenAI is not initialized');
+  }
+  if (process.env.OPENAI_MODEL_NAME == null) {
+    throw new Error('Model name is required');
+  }
+  if (text == null) {
+    throw new Error('Text is required');
+  }
   const completion = await openai.chat.completions.create({
     messages: [
       {
@@ -99,7 +107,11 @@ async function callOpenAI(text: string): Promise<ChatResponse> {
       type: 'json_object'
     }
   });
-  return JSON.parse(completion.choices[0].message.content) as ChatResponse;
+  const content = completion.choices[0].message.content;
+  if (content == null) {
+    throw new Error('No content in the response');
+  }
+  return JSON.parse(content) as ChatResponse;
 }
 
 async function readPrompt(): Promise<string> {
@@ -123,13 +135,14 @@ const prompt = await readPrompt();
 const lastExecLog = await readLastExecLog();
 
 program
-  .version(process.env.npm_package_version)
+  .version(process.env.npm_package_version ?? '0.0.0')
   .argument('<files...>', 'The target files')
   .option('-f, --force', 'Force to update the target files')
-  .option('-l, --use-last-exec', 'Use last executed values')
   .option('-u, --update', 'Update the target files')
+  .option('-l, --use-last-exec', 'Use last executed values')
+  .option('-q, --quiet', 'Suppress output messages', false)
   .action(async (files: string[], options: CommandOptions) => {
-    const { force, update, useLastExec } = options;
+    const { force, update, useLastExec, quiet } = options;
     await Promise.all(await Promise.all(files
       .map(async (file) => {
         try {
@@ -141,35 +154,48 @@ program
           console.error(`${file}: failed to read file\n${error instanceof Error ? error.message : error}`);
         }
       }))
-      .then(items => items.filter(({ text }) => force || /emoji: ""/u.test(text)))
-      .then(async items => await Promise.all(items.map(async ({ file, text }) => {
+      .then((items) => items.filter((item) => item != null))
+      .then((items) => items.filter(({ text }) => force || /emoji: ""/u.test(text)))
+      .then(async (items) => await Promise.all(items.map(async ({ file, text }) => {
         try {
           return {
             file,
             text,
-            ...useLastExec
-              ? lastExecLog.find(item => item.file === file)
-              : await callOpenAI(text)
+            ...(await (async () => {
+              if (useLastExec) {
+                const lastExecLogItem = lastExecLog.find((item) => item.file === file);
+                if (lastExecLogItem != null) {
+                  return lastExecLogItem;
+                }
+              }
+              return await callOpenAI(text);
+            })())
           };
         } catch (error) {
           console.error(`${file}: failed to call OpenAI API\n${error instanceof Error ? error.message : error}`);
         }
       })))
-      .then(items => items.filter(({ emoji }) => emoji))
-      .then(items => items.map(async ({ file, text, emoji, reason }) => {
-        try {
-          console.log(`${file}: ${emoji} ${reason}`);
-          if (update) await writeFile(file, text.replace(/emoji: ".*"/u, `emoji: "${emoji}"`), 'utf-8');
-          return {
-            file,
-            emoji,
-            reason
-          };
-        } catch (error) {
-          console.error(`${file}: failed to write file\n${error instanceof Error ? error.message : error}`);
-        }
-      })))
-      .then(async items => !useLastExec && await writeLastExecLog(items))
-      .catch(error => console.error(error instanceof Error ? error.message : error));
+      .then((items) => items.filter((item) => item != null))
+      .then((items) => items
+        .map(async ({ file, text, emoji, reason }) => {
+          try {
+            if (!quiet) {
+              console.log(`${file}: ${emoji} ${reason}`);
+            }
+            if (update) {
+              await writeFile(file, text.replace(/emoji: ".*"/u, `emoji: "${emoji}"`), 'utf-8');
+            }
+            return {
+              file,
+              emoji,
+              reason
+            };
+          } catch (error) {
+            console.error(`${file}: failed to write file\n${error instanceof Error ? error.message : error}`);
+          }
+        })))
+      .then((items) => items.filter((item) => item != null))
+      .then(async (items) => !useLastExec && await writeLastExecLog(items))
+      .catch((error) => console.error(error instanceof Error ? error.message : error));
   })
   .parse(process.argv);

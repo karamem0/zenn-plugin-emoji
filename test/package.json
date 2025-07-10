@@ -6,7 +6,7 @@
     "zenn:emoji": "zenn-emoji"
   },
   "dependencies": {
-    "@karamem0/zenn-plugin-emoji": "file:../",
-    "zenn-cli": "^0.1.158"
+    "@karamem0/zenn-plugin-emoji": "file:..",
+    "zenn-cli": "^0.2.1"
   }
 }

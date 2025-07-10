@@ -19,26 +19,29 @@
     "zenn"
   ],
   "scripts": {
-    "build": "tsc && babel src --extensions '.ts' --out-dir dist --copy-files"
+    "build": "babel src --extensions '.ts' --out-dir dist --copy-files",
+    "eslint": "eslint src",
+    "eslint:fix": "eslint src --fix"
   },
   "dependencies": {
-    "@azure/identity": "^4.6.0",
-    "commander": "^13.1.0",
-    "dotenv": "^16.4.7",
-    "openai": "^4.80.1"
+    "@azure/identity": "^4.10.2",
+    "commander": "^14.0.0",
+    "dotenv": "^17.2.0",
+    "openai": "^5.8.3"
   },
   "devDependencies": {
-    "@babel/cli": "^7.26.4",
-    "@babel/preset-typescript": "^7.26.0",
-    "@eslint/js": "^9.19.0",
-    "@stylistic/eslint-plugin": "^3.0.0",
+    "@babel/cli": "^7.28.0",
+    "@babel/preset-typescript": "^7.27.1",
+    "@eslint/js": "^9.30.1",
+    "@stylistic/eslint-plugin": "^5.1.0",
+    "@types/node": "^24.0.12",
     "babel-preset-minify": "^0.5.2",
-    "eslint": "^9.19.0",
-    "globals": "^15.14.0",
-    "typescript": "^5.7.3",
-    "typescript-eslint": "^8.22.0"
+    "eslint": "^9.30.1",
+    "globals": "^16.3.0",
+    "typescript": "^5.8.3",
+    "typescript-eslint": "^8.36.0"
   },
   "volta": {
-    "node": "20.18.2"
+    "node": "22.17.0"
   }
 }
