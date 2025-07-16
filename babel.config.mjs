@@ -6,9 +6,8 @@
 // https://github.com/karamem0/zenn-plugin-emoji/blob/main/LICENSE
 //
 
-module.exports = {
+export default {
   'presets': [
-    '@babel/preset-typescript',
-    'minify'
+    '@babel/preset-typescript'
   ]
 };

@@ -66,7 +66,7 @@ npm install @karamem0/zenn-plugin-emoji
 既定ではアイキャッチ絵文字が存在しないファイルを対象にします。オプションを付けない場合はコンソールに結果のみを表示しファイルは更新しません。
 
 ```bash
-npx zenn-emoji articles/*
+npx zenn-emoji
 articles/ebd6b7f4e118f3.md: 💻 プログラミングを学ぶというテーマからコンピュータをイメージしました。
 ```
 
@@ -75,7 +75,7 @@ articles/ebd6b7f4e118f3.md: 💻 プログラミングを学ぶというテー�
 `-u` オプションを付けることで生成したアイキャッチ絵文字でファイルを更新します。
 
 ```bash
-npx zenn-emoji articles/* -u
+npx zenn-emoji -u
 ```
 
 ### 前回の結果でファイルを更新する
@@ -83,19 +83,27 @@ npx zenn-emoji articles/* -u
 `-l` オプションを付けることで前回の実行結果でファイルを更新します。すぐにファイルを更新せずに結果を確認してから更新する場合におすすめです。
 
 ```bash
-npx zenn-emoji articles/*       # 生成結果を確認して
-npx zenn-emoji articles/* -u -l # ファイルを更新する
+npx zenn-emoji       # 生成結果を確認して
+npx zenn-emoji -u -l # ファイルを更新する
 ```
 
-### すべてのファイルを対象にする
+### 生成済みのファイルを対象にする
 
 `-f` オプションを付けることでアイキャッチ絵文字が存在するファイルも対象にします。
 
 ```bash
-npx zenn-emoji articles/* -f
+npx zenn-emoji -f
 articles/1d7a517be7f801.md: ⏳ 非同期処理という言葉から時間の経過をイメージしました。
 articles/261cbfd985d9b8.md: 🌐 AIというテーマから、世界中に広がる技術の可能性をイメージしました。
 articles/ebd6b7f4e118f3.md: 💻 プログラミングというテーマから、コンピュータをイメージしました。
+```
+
+### 特定のファイルのみを対象にする
+
+ターゲットを省略した場合 `artcles/*.md` を対象にします。ターゲットを指定すると特定のファイルのみを対象にできます。
+
+```bash
+npx zenn-emoji articles/ebd6b7f4e118f3.md
 ```
 
 ## オプション
@@ -103,6 +111,6 @@ articles/ebd6b7f4e118f3.md: 💻 プログラミングというテーマから�
 |短い名前|長い名前|説明|
 |-|-|-|
 |`-u`|`--update`|対象のファイルを更新します。|
-|`-l`|`--use-last-exec`|前回の実行結果を使用します。|
+|`-c`|`--cache`|前回実行時のキャッシュを再利用します。|
 |`-f`|`--force`|アイキャッチ絵文字が設定されているファイルの更新を強制します。|
 |`-q`|`--quiet`|メッセージの表示を抑制します。|
