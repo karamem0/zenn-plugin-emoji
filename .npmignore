@@ -12,6 +12,7 @@ test/
 
 # Configuration files
 .editorconfig
-babel.config.cjs
+babel.config.mjs
 eslint.config.mjs
 tsconfig.json
+webpack.config.mjs
