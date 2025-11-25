@@ -12,9 +12,20 @@ permissions:
 jobs:
   deploy-to-npm:
     name: Deploy to npm
-    uses: ./.github/workflows/deploy-to-npm.yml
-    secrets: inherit
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repos
+        uses: actions/checkout@v4
+      - name: Deploy to npm
+        uses: ./.github/actions/deploy-to-npm
+        env:
+          BUILD_VERSION: ${{vars.BUILD_VERSION}}
+          NODE_AUTH_TOKEN: ${{secrets.NODE_AUTH_TOKEN}}
   deploy-to-github-release:
     name: Deploy to GitHub Release
-    uses: ./.github/workflows/deploy-to-github-release.yml
-    secrets: inherit
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repos
+        uses: actions/checkout@v4
+      - name: Deploy to GitHub Release
+        uses: ./.github/actions/deploy-to-github-release

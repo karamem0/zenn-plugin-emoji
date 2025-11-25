@@ -1,0 +1,32 @@
+name: Deploy to npm
+
+description: This GitHub Action deploys built artifacts to npm registry.
+
+runs:
+  using: composite
+  steps:
+    - name: Checkout repos
+      uses: actions/checkout@v4
+    - name: Setup node.js
+      uses: actions/setup-node@v4
+      with:
+        node-version: 22.x
+        registry-url: https://registry.npmjs.org/
+        always-auth: true
+    - name: Update package.json
+      shell: pwsh
+      run: npm version ${{env.BUILD_VERSION}} --no-git-tag-version
+    - name: Restore source
+      shell: pwsh
+      run: npm ci
+    - name: Audit source
+      shell: pwsh
+      run: npm audit --omit=dev
+    - name: Build source
+      shell: pwsh
+      run: npm run build
+    - name: Publish source
+      shell: pwsh
+      run: npm publish --provenance --access=public
+      env:
+        NODE_AUTH_TOKEN: ${{env.NODE_AUTH_TOKEN}}

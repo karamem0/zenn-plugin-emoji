@@ -6,13 +6,14 @@
 // https://github.com/karamem0/zenn-plugin-emoji/blob/main/LICENSE
 //
 
+import { defineConfig } from 'eslint/config';
 import { globalIgnores } from 'eslint/config';
 import globals from 'globals';
 import js from '@eslint/js';
 import stylistic from '@stylistic/eslint-plugin';
 import ts from 'typescript-eslint';
 
-export default ts.config(
+export default defineConfig(
   js.configs.recommended,
   ts.configs.recommended,
   globalIgnores([

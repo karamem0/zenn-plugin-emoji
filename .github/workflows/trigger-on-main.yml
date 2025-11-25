@@ -11,5 +11,12 @@ permissions:
 jobs:
   deploy-to-github-packages:
     name: Deploy to GitHub Packages
-    uses: ./.github/workflows/deploy-to-github-packages.yml
-    secrets: inherit
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repos
+        uses: actions/checkout@v4
+      - name: Deploy to GitHub Packages
+        uses: ./.github/actions/deploy-to-github-packages
+        env:
+          BUILD_VERSION: ${{vars.BUILD_VERSION}}
+          GITHUB_TOKEN: ${{secrets.GITHUB_TOKEN}}
