@@ -11,6 +11,7 @@
 import { readCacheLog, writeCacheLog } from './cache';
 import { readFile, writeFile } from 'fs/promises';
 import { callOpenAI } from './openai';
+import { chunk } from './utils';
 import { glob } from 'glob';
 import { program } from 'commander';
 
@@ -18,11 +19,12 @@ type CommandOptions = {
   force?: boolean,
   update?: boolean,
   cache?: boolean,
-  quiet?: boolean
+  quiet?: boolean,
+  batchSize?: number
 };
 
 async function processCommand(files: string[], options: CommandOptions): Promise<void> {
-  const { force, update, cache, quiet } = options;
+  const { force, update, cache, quiet, batchSize } = options;
   const cacheLog = await readCacheLog();
   if (files.length === 0) {
     files = glob.sync('articles/*.md');
@@ -43,26 +45,28 @@ async function processCommand(files: string[], options: CommandOptions): Promise
     }))
     .then((items) => items.filter((item) => item != null))
     .then((items) => items.filter(({ text }) => force || /emoji: ""/u.test(text)))
-    .then(async (items) => await Promise.all(items.map(async ({ file, text }) => {
-      try {
-        return {
-          file,
-          text,
-          ...(await (async () => {
-            if (cache) {
-              const cacheLogItem = cacheLog.find((item) => item.file === file);
-              if (cacheLogItem != null) {
-                return cacheLogItem;
-              }
-            }
-            return await callOpenAI(text);
-          })())
-        };
-      } catch (error) {
-        console.error(`${file}: failed to call OpenAI API\n${error instanceof Error ? error.message : error}`);
-      }
+    .then((items) => items.map(({ file, text }) => ({
+      file,
+      text,
+      ...(cache ? cacheLog.find((log) => log.file === file) : undefined)
     })))
-    .then((items) => items.filter((item) => item != null))
+    .then(async (items) => {
+      const values = await Promise.all(
+        chunk(items.filter(({ emoji }) => emoji == null), batchSize ?? 10)
+          .map(async (batch) => {
+            try {
+              return callOpenAI(batch);
+            } catch (error) {
+              console.error(`failed to call OpenAI API\n${error instanceof Error ? error.message : error}`);
+              return [];
+            }
+          }));
+      return items.map((item) => ({
+        ...item,
+        ...(item.emoji == null ? values.flat().find((value) => value.file === item.file) : undefined)
+      }));
+    })
+    .then((items) => items.filter((item): item is Required<typeof item> => item.emoji != null && item.reason != null))
     .then((items) => items
       .map(async ({ file, text, emoji, reason }) => {
         try {
@@ -93,5 +97,6 @@ program
   .option('-u, --update', 'Update the target files')
   .option('-c, --cache', 'Reuse cached results from last execution')
   .option('-q, --quiet', 'Suppress output messages', false)
+  .option('-b, --batch-size <number>', 'Set the batch size', '10')
   .action(processCommand)
   .parse(process.argv);

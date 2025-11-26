@@ -7,20 +7,13 @@
 //
 
 import { readFile, writeFile } from 'fs/promises';
+import { ChatResponseArray } from './type';
 import path from 'path';
 import { tmpdir } from 'os';
 
-type CacheLogItem = {
-  file: string,
-  emoji: string,
-  reason: string
-};
-
-type CacheLog = CacheLogItem[];
-
 const cacheFile = path.join(tmpdir(), 'zenn-plugin-emoji.json');
 
-export async function readCacheLog(): Promise<CacheLog> {
+export async function readCacheLog(): Promise<ChatResponseArray> {
   try {
     return JSON.parse(await readFile(cacheFile, 'utf-8'));
   } catch {
@@ -28,6 +21,6 @@ export async function readCacheLog(): Promise<CacheLog> {
   }
 }
 
-export async function writeCacheLog(value: CacheLog): Promise<void> {
+export async function writeCacheLog(value: ChatResponseArray): Promise<void> {
   await writeFile(cacheFile, JSON.stringify(value), 'utf-8');
 }
