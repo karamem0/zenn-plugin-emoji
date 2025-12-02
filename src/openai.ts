@@ -55,7 +55,7 @@ const openai: OpenAI = (() => {
   throw new Error('Cannot create an instance of OpenAI');
 })();
 
-export async function callOpenAI(batch: ChatRequestArray): Promise<ChatResponseArray> {
+export async function callOpenAI(items: ChatRequestArray): Promise<ChatResponseArray> {
   if (process.env.OPENAI_MODEL_NAME == null) {
     throw new Error('Model name is required');
   }
@@ -68,7 +68,7 @@ export async function callOpenAI(batch: ChatRequestArray): Promise<ChatResponseA
       },
       {
         role: 'user',
-        content: JSON.stringify({ value: batch })
+        content: JSON.stringify({ value: items })
       }
     ],
     model: process.env.OPENAI_MODEL_NAME,

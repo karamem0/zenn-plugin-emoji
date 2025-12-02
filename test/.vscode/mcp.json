@@ -1,0 +1,12 @@
+{
+  "servers": {
+    "zenn-plugin-emoji": {
+      "type": "stdio",
+      "command": "npx",
+      "args": [
+        "zenn-emoji",
+        "--mcp-server"
+      ]
+    }
+  }
+}

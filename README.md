@@ -106,6 +106,25 @@ articles/ebd6b7f4e118f3.md: 💻 プログラミングというテーマから�
 npx zenn-emoji articles/ebd6b7f4e118f3.md
 ```
 
+### MCP サーバー
+
+`-s` オプションを付けることで MCP サーバーとしての利用が可能です。
+
+```json
+{
+  "servers": {
+    "zenn-plugin-emoji": {
+      "type": "stdio",
+      "command": "npx",
+      "args": [
+        "zenn-emoji",
+        "--mcp-server"
+      ]
+    }
+  }
+}
+```
+
 ## オプション
 
 |短い名前|長い名前|説明|
@@ -115,3 +134,4 @@ npx zenn-emoji articles/ebd6b7f4e118f3.md
 |`-f`|`--force`|アイキャッチ絵文字が設定されているファイルの更新を強制します。|
 |`-q`|`--quiet`|メッセージの表示を抑制します。|
 |`-b`|`--batch-size`|バッチ要求のサイズを指定します。|
+|`-s`|`--mcp-server`|MCP サーバーを起動します。|

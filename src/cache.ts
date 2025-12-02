@@ -13,7 +13,7 @@ import { tmpdir } from 'os';
 
 const cacheFile = path.join(tmpdir(), 'zenn-plugin-emoji.json');
 
-export async function readCacheLog(): Promise<ChatResponseArray> {
+export async function readCacheFile(): Promise<ChatResponseArray> {
   try {
     return JSON.parse(await readFile(cacheFile, 'utf-8'));
   } catch {
@@ -21,6 +21,6 @@ export async function readCacheLog(): Promise<ChatResponseArray> {
   }
 }
 
-export async function writeCacheLog(value: ChatResponseArray): Promise<void> {
+export async function writeCacheFile(value: ChatResponseArray): Promise<void> {
   await writeFile(cacheFile, JSON.stringify(value), 'utf-8');
 }
