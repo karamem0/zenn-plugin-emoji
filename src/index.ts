@@ -27,15 +27,17 @@ type CommandOptions = {
   mcpServer?: boolean
 };
 
+const version = process.env.npm_package_version ?? '0.0.0';
+
 async function processCommand(files: string[], options: CommandOptions): Promise<void> {
   const { force, update, cache, quiet, batchSize, mcpServer } = options;
   if (mcpServer) {
     const server = new McpServer({
       name: 'zenn-plugin-emoji',
-      version: process.env.npm_package_version ?? '0.0.0'
+      version
     });
     server.registerTool(
-      'generate_emoji',
+      'generate-emoji',
       {
         description: 'Generate the most suitable eye-catching emoji (one character) for articles on Zenn (https://zenn.dev)',
         inputSchema: {
@@ -122,19 +124,17 @@ async function processCommand(files: string[], options: CommandOptions): Promise
   }
 }
 
-const mcpServerOption = program.createOption('--mcp-server', 'Launch MCP server');
-mcpServerOption.short = '-s';
-mcpServerOption.default(false);
-mcpServerOption.conflicts([ 'force', 'update', 'cache', 'quiet', 'batchSize' ]);
-
 program
-  .version(process.env.npm_package_version ?? '0.0.0')
+  .version(version)
   .argument('[files...]', 'The target files')
   .option('-f, --force', 'Force to update the target files')
   .option('-u, --update', 'Update the target files')
   .option('-c, --cache', 'Reuse cached results from last execution')
   .option('-q, --quiet', 'Suppress output messages', false)
   .option('-b, --batch-size <number>', 'Set the batch size', '10')
-  .addOption(mcpServerOption)
+  .addOption(program
+    .createOption('-s, --mcp-server', 'Launch MCP server')
+    .default(false)
+    .conflicts([ 'force', 'update', 'cache', 'quiet', 'batchSize' ]))
   .action(processCommand)
   .parse(process.argv);

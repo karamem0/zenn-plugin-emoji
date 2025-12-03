@@ -15,7 +15,9 @@ import { readFile } from 'fs/promises';
 
 dotenv.config({ path: [ '.env', '.env.local' ], quiet: true });
 
-const openai: OpenAI = (() => {
+let openai: OpenAI;
+
+function createOpenAI(): OpenAI {
   if (process.env.OPENAI_API_KEY) {
     return new OpenAI({
       apiKey: process.env.OPENAI_API_KEY
@@ -53,18 +55,20 @@ const openai: OpenAI = (() => {
     });
   }
   throw new Error('Cannot create an instance of OpenAI');
-})();
+}
 
 export async function callOpenAI(items: ChatRequestArray): Promise<ChatResponseArray> {
   if (process.env.OPENAI_MODEL_NAME == null) {
     throw new Error('Model name is required');
   }
-  const systemMessage = await readFile(path.join(__dirname, 'skills/skprompt.txt'), 'utf-8');
+  if (openai == null) {
+    openai = createOpenAI();
+  }
   const completion = await openai.chat.completions.create({
     messages: [
       {
         role: 'system',
-        content: systemMessage
+        content: await readFile(path.join(__dirname, 'skills/skprompt.txt'), 'utf-8')
       },
       {
         role: 'user',
