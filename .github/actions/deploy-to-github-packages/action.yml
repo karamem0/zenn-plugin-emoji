@@ -13,6 +13,9 @@ runs:
         node-version: 22.x
         registry-url: https://npm.pkg.github.com/
         always-auth: true
+    - name: Update npm
+      shell: pwsh
+      run: npm install -g npm
     - name: Update package.json
       shell: pwsh
       run: npm version ${{env.BUILD_VERSION}}-beta.${{github.run_number}} --no-git-tag-version
