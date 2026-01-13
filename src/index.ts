@@ -1,7 +1,7 @@
 #!/usr/bin/env node
 
 //
-// Copyright (c) 2024-2025 karamem0
+// Copyright (c) 2024-2026 karamem0
 //
 // This software is released under the MIT License.
 //
