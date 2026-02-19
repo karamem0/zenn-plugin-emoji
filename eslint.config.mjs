@@ -6,11 +6,11 @@
 // https://github.com/karamem0/zenn-plugin-emoji/blob/main/LICENSE
 //
 
-import { defineConfig } from 'eslint/config';
-import { globalIgnores } from 'eslint/config';
-import globals from 'globals';
 import js from '@eslint/js';
 import stylistic from '@stylistic/eslint-plugin';
+import perfectionist from 'eslint-plugin-perfectionist';
+import { defineConfig } from 'eslint/config';
+import globals from 'globals';
 import ts from 'typescript-eslint';
 
 export default defineConfig(
@@ -26,51 +26,12 @@ export default defineConfig(
       }
     },
     'plugins': {
-      '@stylistic': stylistic
+      '@stylistic': stylistic,
+      'perfectionist': perfectionist
     }
   },
   {
     'rules': {
-      'dot-notation': [
-        'error',
-        {
-          'allowPattern': '^[a-z]+(_[a-z]+)+$'
-        }
-      ],
-      'key-spacing': [
-        'error',
-        {
-          'afterColon': true
-        }
-      ],
-      'linebreak-style': [
-        'error',
-        'unix'
-      ],
-      'no-alert': 'error',
-      'no-console': 'off',
-      'no-unused-vars': 'off',
-      'no-use-before-define': 'off',
-      'no-var': 'error',
-      'sort-imports': [
-        'error',
-        {
-          'allowSeparatedGroups': true
-        }
-      ],
-      'space-before-function-paren': [
-        'error',
-        {
-          'anonymous': 'never',
-          'named': 'never',
-          'asyncArrow': 'always'
-        }
-      ],
-      '@stylistic/arrow-parens': [
-        'error',
-        'always'
-      ],
-      '@stylistic/arrow-spacing': 'error',
       '@stylistic/array-bracket-spacing': [
         'error',
         'always',
@@ -78,6 +39,11 @@ export default defineConfig(
           'arraysInArrays': false
         }
       ],
+      '@stylistic/arrow-parens': [
+        'error',
+        'always'
+      ],
+      '@stylistic/arrow-spacing': 'error',
       '@stylistic/brace-style': [
         'error',
         '1tbs'
@@ -112,14 +78,6 @@ export default defineConfig(
           'maximum': 1
         }
       ],
-      '@stylistic/jsx-sort-props': [
-        'error',
-        {
-          'callbacksLast': true,
-          'multiline': 'last',
-          'reservedFirst': true
-        }
-      ],
       '@stylistic/jsx-tag-spacing': [
         'error',
         {
@@ -145,16 +103,22 @@ export default defineConfig(
       ],
       '@stylistic/operator-linebreak': [
         'error',
-        'after'
+        'after',
+        {
+          'overrides': {
+            '&': 'before',
+            '|': 'before'
+          }
+        }
       ],
       '@stylistic/padded-blocks': 'off',
-      '@stylistic/quotes': [
-        'error',
-        'single'
-      ],
       '@stylistic/quote-props': [
         'error',
         'consistent'
+      ],
+      '@stylistic/quotes': [
+        'error',
+        'single'
       ],
       '@stylistic/semi': [
         'error',
@@ -170,6 +134,112 @@ export default defineConfig(
         'error',
         {
           'varsIgnorePattern': '^_'
+        }
+      ],
+      'dot-notation': [
+        'error',
+        {
+          'allowPattern': '^[a-z]+(_[a-z]+)+$'
+        }
+      ],
+      'key-spacing': [
+        'error',
+        {
+          'afterColon': true
+        }
+      ],
+      'linebreak-style': [
+        'error',
+        'unix'
+      ],
+      'no-alert': 'error',
+      'no-console': [
+        'warn',
+        {
+          'allow': [
+            'error'
+          ]
+        }
+      ],
+      'no-unused-vars': 'off',
+      'no-use-before-define': 'off',
+      'no-var': 'error',
+      'perfectionist/sort-imports': [
+        'error',
+        {
+          'newlinesBetween': 'ignore',
+          'newlinesInside': 'ignore',
+          'partitionByNewLine': true,
+          'type': 'natural'
+        }
+      ],
+      'perfectionist/sort-interfaces': [
+        'error',
+        {
+          'customGroups': [
+            {
+              'elementNamePattern': '^on.+',
+              'groupName': 'callback'
+            }
+          ],
+          'groups': [
+            'unknown',
+            'method',
+            'callback'
+          ],
+          'newlinesBetween': 'ignore',
+          'newlinesInside': 'ignore',
+          'partitionByNewLine': true,
+          'type': 'natural'
+        }
+      ],
+      'perfectionist/sort-jsx-props': [
+        'error',
+        {
+          'customGroups': [
+            {
+              'elementNamePattern': '^on.+',
+              'groupName': 'callback'
+            }
+          ],
+          'groups': [
+            'shorthand-prop',
+            'unknown',
+            'multiline-prop',
+            'callback'
+          ],
+          'newlinesBetween': 'ignore',
+          'newlinesInside': 'ignore',
+          'partitionByNewLine': true,
+          'type': 'natural'
+        }
+      ],
+      'perfectionist/sort-objects': [
+        'error',
+        {
+          'customGroups': [
+            {
+              'elementNamePattern': '^on.+',
+              'groupName': 'callback'
+            }
+          ],
+          'groups': [
+            'unknown',
+            'method',
+            'callback'
+          ],
+          'newlinesBetween': 'ignore',
+          'newlinesInside': 'ignore',
+          'partitionByNewLine': true,
+          'type': 'natural'
+        }
+      ],
+      'space-before-function-paren': [
+        'error',
+        {
+          'anonymous': 'never',
+          'asyncArrow': 'always',
+          'named': 'never'
         }
       ]
     }
