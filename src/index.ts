@@ -6,16 +6,16 @@
 // https://github.com/karamem0/zenn-plugin-emoji/blob/main/LICENSE
 //
 
-import { readCacheFile, writeCacheFile } from './cache';
-import { readFile, writeFile } from 'fs/promises';
-import { ConsoleLogger } from './console';
 import { McpServer } from '@modelcontextprotocol/sdk/server/mcp.js';
 import { StdioServerTransport } from '@modelcontextprotocol/sdk/server/stdio.js';
+import { program } from 'commander';
+import { readFile, writeFile } from 'fs/promises';
+import { glob } from 'glob';
+import { z } from 'zod';
+import { readCacheFile, writeCacheFile } from './cache';
+import { ConsoleLogger } from './console';
 import { callOpenAI } from './openai';
 import { chunk } from './utils';
-import { glob } from 'glob';
-import { program } from 'commander';
-import { z } from 'zod';
 
 type CommandOptions = {
   force?: boolean,
@@ -46,8 +46,8 @@ async function processMcpServer(): Promise<void> {
       return {
         content: [
           {
-            type: 'text',
-            text: JSON.stringify(await callOpenAI([ value ]))
+            text: JSON.stringify(await callOpenAI([ value ])),
+            type: 'text'
           }
         ]
       };
@@ -57,7 +57,7 @@ async function processMcpServer(): Promise<void> {
 }
 
 async function processCommand(files: string[], options: CommandOptions): Promise<void> {
-  const { force, update, cache, quiet, batchSize } = options;
+  const { batchSize, cache, force, quiet, update } = options;
   const logger = new ConsoleLogger(quiet ?? false);
   const caches = await readCacheFile();
   if (files.length === 0) {
@@ -100,15 +100,15 @@ async function processCommand(files: string[], options: CommandOptions): Promise
     })
     .then((items) => items.filter((item): item is Required<typeof item> => item.emoji != null && item.reason != null))
     .then((items) => items
-      .map(async ({ file, text, emoji, reason }) => {
+      .map(async ({ emoji, file, reason, text }) => {
         try {
           logger.log(`${file}: ${emoji} ${reason}`);
           if (update) {
             await writeFile(file, text.replace(/emoji: ".*"/u, `emoji: "${emoji}"`), 'utf-8');
           }
           return {
-            file,
             emoji,
+            file,
             reason
           };
         } catch (error) {

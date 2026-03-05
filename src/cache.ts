@@ -7,9 +7,9 @@
 //
 
 import { readFile, writeFile } from 'fs/promises';
-import { ChatResponseArray } from './type';
-import path from 'path';
 import { tmpdir } from 'os';
+import path from 'path';
+import { ChatResponseArray } from './type';
 
 const cacheFile = path.join(tmpdir(), 'zenn-plugin-emoji.json');
 

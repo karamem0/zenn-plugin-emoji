@@ -6,12 +6,12 @@
 // https://github.com/karamem0/zenn-plugin-emoji/blob/main/LICENSE
 //
 
-import { ChatRequestArray, ChatResponseArray } from './type';
 import { ClientSecretCredential, getBearerTokenProvider } from '@azure/identity';
-import OpenAI, { AzureOpenAI } from 'openai';
 import dotenv from 'dotenv';
-import path from 'path';
 import { readFile } from 'fs/promises';
+import OpenAI, { AzureOpenAI } from 'openai';
+import path from 'path';
+import { ChatRequestArray, ChatResponseArray } from './type';
 
 dotenv.config({ path: [ '.env', '.env.local' ], quiet: true });
 
@@ -42,6 +42,7 @@ function createOpenAI(): OpenAI {
     process.env.OPENAI_API_VERSION
   ) {
     return new AzureOpenAI({
+      apiVersion: process.env.OPENAI_API_VERSION,
       azureADTokenProvider: getBearerTokenProvider(
         new ClientSecretCredential(
           process.env.AZURE_TENANT_ID,
@@ -50,7 +51,6 @@ function createOpenAI(): OpenAI {
         ),
         'https://cognitiveservices.azure.com/.default'
       ),
-      apiVersion: process.env.OPENAI_API_VERSION,
       endpoint: process.env.AZURE_OPENAI_ENDPOINT
     });
   }
@@ -67,12 +67,12 @@ export async function callOpenAI(items: ChatRequestArray): Promise<ChatResponseA
   const completion = await openai.chat.completions.create({
     messages: [
       {
-        role: 'system',
-        content: await readFile(path.join(__dirname, 'skills/skprompt.txt'), 'utf-8')
+        content: await readFile(path.join(__dirname, 'skills/skprompt.txt'), 'utf-8'),
+        role: 'system'
       },
       {
-        role: 'user',
-        content: JSON.stringify({ value: items })
+        content: JSON.stringify({ value: items }),
+        role: 'user'
       }
     ],
     model: process.env.OPENAI_MODEL_NAME,
