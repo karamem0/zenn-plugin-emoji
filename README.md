@@ -1,6 +1,6 @@
 # zenn-plugin-emoji
 
-[![.github/workflows/trigger-on-main.yml](https://github.com/karamem0/zenn-plugin-emoji/actions/workflows/trigger-on-main.yml/badge.svg)](https://github.com/karamem0/zenn-plugin-emoji/actions/workflows/trigger-on-main.yml)
+[![.github/workflows/push-on-main.yml](https://github.com/karamem0/zenn-plugin-emoji/actions/workflows/push-on-main.yml/badge.svg)](https://github.com/karamem0/zenn-plugin-emoji/actions/workflows/push-on-main.yml)
 [![License](https://img.shields.io/github/license/karamem0/zenn-plugin-emoji.svg)](https://github.com/karamem0/zenn-plugin-emoji/blob/main/LICENSE)
 
 [Zenn](https://zenn.dev/) のアイキャッチ絵文字を記事の内容から生成するためのプラグインです。
