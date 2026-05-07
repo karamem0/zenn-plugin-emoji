@@ -2,9 +2,6 @@ name: Deploy to npm
 
 description: This GitHub Action deploys built artifacts to npm registry.
 
-permissions:
-  id-token: write
-
 runs:
   using: composite
   steps:

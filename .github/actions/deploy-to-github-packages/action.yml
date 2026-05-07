@@ -5,8 +5,6 @@ description: This GitHub Action deploys built artifacts to GitHub Packages regis
 runs:
   using: composite
   steps:
-    - name: Checkout repos
-      uses: actions/checkout@v5
     - name: Setup node.js
       uses: actions/setup-node@v6
       with:
@@ -35,6 +33,7 @@ runs:
         echo "@karamem0:registry=https://npm.pkg.github.com/" >> .npmrc
     - name: Publish source
       shell: pwsh
-      run: npm publish --tag beta
+      run: |
+        npm publish --tag beta
       env:
         NODE_AUTH_TOKEN: ${{env.GITHUB_TOKEN}}
