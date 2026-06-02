@@ -15,7 +15,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout repos
-        uses: actions/checkout@v5
+        uses: actions/checkout@v6
       - name: Deploy to npm
         uses: ./.github/actions/deploy-to-npm
         env:
@@ -25,6 +25,6 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout repos
-        uses: actions/checkout@v5
+        uses: actions/checkout@v6
       - name: Deploy to GitHub Release
         uses: ./.github/actions/deploy-to-github-release
