@@ -80,7 +80,7 @@ export async function callOpenAI(items: ChatRequestArray): Promise<ChatResponseA
       type: 'json_object'
     }
   });
-  const content = completion.choices[0].message.content;
+  const content = completion.choices[0]?.message?.content;
   if (content == null) {
     throw new Error('No content in the response');
   }
