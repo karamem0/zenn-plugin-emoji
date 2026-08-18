@@ -7,7 +7,7 @@
 
 ## 事前準備
 
-*このプラグインでは OpenAI の GPT を使用しますが環境は提供していません。OpenAI または Azure OpenAI Service の環境をあらかじめご用意ください。また、このプラグインを実行したことによるいかなる損害も責任を負いません。*
+*このプラグインでは生成 AI を使用しますが生成 AI の環境は提供していません。OpenAI (Azure OpenAI Service) または Anthropic の環境はご自身でご用意ください。また、このプラグインを実行したことによるいかなる損害も責任を負いません。*
 
 Zenn の GitHub 連携を行っているリポジトリにパッケージをインストールします。
 
@@ -17,18 +17,20 @@ npm install @karamem0/zenn-plugin-emoji
 
 `.env` または `.env.local` ファイルを作成し以下の環境変数を設定します。
 
-|キー名|説明|OpenAI|Azure OpenAI Service (API キー)|Azure OpenAI Service (Entra ID アプリケーション)|
-|-|-|-|-|-|
-|OPENAI_API_KEY|OpenAI の API キー|X|||
-|OPENAI_API_VERSION|OpenAI の API バージョン (`2024-05-01` など)||X|X|
+|キー名|説明|OpenAI|Azure OpenAI Service (API キー)|Azure OpenAI Service (Entra ID アプリケーション)|Anthropic|
+|-|-|-|-|-|-|
+|OPENAI_API_KEY|OpenAI の API キー|X||||
+|OPENAI_API_VERSION|OpenAI の API バージョン (`2024-05-01` など)||X|X||
 |OPENAI_MODEL_NAME|OpenAI の場合はモデル名、Azure OpenAI Serviceの場合はデプロイ名|X|X|X|
-|AZURE_OPENAI_API_KEY|Azure OpenAI Service の API キー||X||
-|AZURE_OPENAI_ENDPOINT|Azure OpenAI Service のエンドポイント||X|X|
-|AZURE_CLIENT_ID|Entra ID アプリケーションのクライアント ID|||X|
-|AZURE_CLIENT_SECRET|Entra ID アプリケーションのクライアント シークレット|||X|
-|AZURE_TENANT_ID|Entra ID アプリケーションのテナント ID|||X|
+|AZURE_OPENAI_API_KEY|Azure OpenAI Service の API キー||X||| 
+|AZURE_OPENAI_ENDPOINT|Azure OpenAI Service のエンドポイント||X|X||
+|AZURE_CLIENT_ID|Entra ID アプリケーションのクライアント ID|||X||
+|AZURE_CLIENT_SECRET|Entra ID アプリケーションのクライアント シークレット|||X||
+|AZURE_TENANT_ID|Entra ID アプリケーションのテナント ID|||X||
+|ANTHROPIC_API_KEY|Anthropic の API キー||||X|
+|ANTHROPIC_MODEL_NAME|Anthropic のモデル名||||X|
 
-以下に OpenAI および Azure OpenAI Service 環境ごとの設定例を示します。
+以下に環境ごとの設定例を示します。
 
 - **OpenAI の例**
 
@@ -57,6 +59,13 @@ npm install @karamem0/zenn-plugin-emoji
     AZURE_OPENAI_ENDPOINT=https://<your-aoai-resoure-name>.openai.azure.com
     OPENAI_API_VERSION=<your-aoai-api-version>
     OPENAI_MODEL_NAME=<your-aoai-deployment-name>
+    ```
+
+- **Anthropic の例**
+
+    ```
+    ANTHROPIC_API_KEY=<your-anthropic-api-key>
+    ANTHROPIC_MODEL_NAME=<your-anthropic-model-name>
     ```
 
 ## 使用方法
@@ -100,7 +109,7 @@ articles/ebd6b7f4e118f3.md: 💻 プログラミングというテーマから�
 
 ### 特定のファイルのみを対象にする
 
-ターゲットを省略した場合 `artcles/*.md` を対象にします。ターゲットを指定すると特定のファイルのみを対象にできます。
+ターゲットを省略した場合 `articles/*.md` を対象にします。ターゲットを指定すると特定のファイルのみを対象にできます。
 
 ```bash
 npx zenn-emoji articles/ebd6b7f4e118f3.md

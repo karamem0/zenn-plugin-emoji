@@ -6,6 +6,10 @@
 // https://github.com/karamem0/zenn-plugin-emoji/blob/main/LICENSE
 //
 
+export type ChatClient = {
+  chatCompletion: (items: ChatRequestArray) => Promise<ChatResponseArray>
+};
+
 export type ChatRequest = {
   file: string,
   text: string

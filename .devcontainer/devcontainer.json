@@ -4,7 +4,7 @@
   "features": {
     "ghcr.io/devcontainers/features/git-lfs:1": {},
     "ghcr.io/devcontainers/features/node:2": {
-      "version": "24.18.1"
+      "version": "24"
     }
   },
   "postCreateCommand": "npm install -g npm-check-updates",
@@ -13,7 +13,9 @@
       "extensions": [
         "dbaeumer.vscode-eslint",
         "editorconfig.editorconfig",
-        "github.vscode-github-actions"
+        "github.vscode-github-actions",
+        "redhat.vscode-yaml",
+        "redhat.vscode-xml"
       ]
     }
   }

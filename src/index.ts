@@ -13,8 +13,8 @@ import { readFile, writeFile } from 'fs/promises';
 import { glob } from 'glob';
 import { z } from 'zod';
 import { readCacheFile, writeCacheFile } from './cache';
+import { createChatClient } from './client';
 import { ConsoleLogger } from './console';
-import { callOpenAI } from './openai';
 import { chunk } from './utils';
 
 type CommandOptions = {
@@ -43,10 +43,11 @@ async function processMcpServer(): Promise<void> {
       }
     },
     async (value) => {
+      const client = createChatClient();
       return {
         content: [
           {
-            text: JSON.stringify(await callOpenAI([ value ])),
+            text: JSON.stringify(await client.chatCompletion([ value ])),
             type: 'text'
           }
         ]
@@ -58,6 +59,7 @@ async function processMcpServer(): Promise<void> {
 
 async function processCommand(files: string[], options: CommandOptions): Promise<void> {
   const { batchSize, cache, force, quiet, update } = options;
+  const client = createChatClient();
   const logger = new ConsoleLogger(quiet ?? false);
   const caches = await readCacheFile();
   if (files.length === 0) {
@@ -87,7 +89,7 @@ async function processCommand(files: string[], options: CommandOptions): Promise
         chunk(items.filter(({ emoji }) => !cache || emoji == null), batchSize ?? 10)
           .map(async (items) => {
             try {
-              return callOpenAI(items);
+              return await client.chatCompletion(items);
             } catch (error) {
               logger.error(`failed to call OpenAI API\n${error instanceof Error ? error.message : error}`);
               return [];

@@ -7,33 +7,29 @@
 //
 
 import CopyPlugin from 'copy-webpack-plugin';
-import nodeExternals from 'webpack-node-externals';
 import path from 'path';
 import webpack from 'webpack';
+import nodeExternals from 'webpack-node-externals';
 
 export default {
   'entry': './src/index.ts',
+  'externals': [
+    nodeExternals()
+  ],
+  'mode': 'production',
+  'module': {
+    'rules': [
+      {
+        'exclude': /node_modules/,
+        'loader': 'babel-loader',
+        'test': /\.ts$/
+      }
+    ]
+  },
   'output': {
     'clean': true,
     'filename': 'index.js',
     'path': path.resolve(import.meta.dirname, 'dist')
-  },
-  'target': 'node',
-  'mode': 'production',
-  'externals': [
-    nodeExternals()
-  ],
-  'resolve': {
-    'extensions': [ '.ts', '.js' ]
-  },
-  'module': {
-    'rules': [
-      {
-        'test': /\.ts$/,
-        'exclude': /node_modules/,
-        'loader': 'babel-loader'
-      }
-    ]
   },
   'plugins': [
     new webpack.BannerPlugin(
@@ -50,5 +46,9 @@ export default {
         }
       ]
     })
-  ]
+  ],
+  'resolve': {
+    'extensions': [ '.ts', '.js' ]
+  },
+  'target': 'node'
 };
