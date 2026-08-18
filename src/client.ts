@@ -78,6 +78,7 @@ class OpenAIAgent implements ChatClient {
       throw new Error('Model name is required');
     }
     const completion = await this.openai.chat.completions.create({
+      max_completion_tokens: 16384,
       messages: [
         {
           content: await readFile(path.join(__dirname, 'skills/skprompt.txt'), 'utf-8'),
@@ -93,7 +94,11 @@ class OpenAIAgent implements ChatClient {
         type: 'json_object'
       }
     });
-    const content = completion.choices[0]?.message?.content;
+    const choice = completion.choices[0];
+    if (choice?.finish_reason === 'length') {
+      throw new Error('The response was truncated because it exceeded the maximum number of tokens');
+    }
+    const content = choice?.message?.content;
     if (content == null) {
       throw new Error('No content in the response');
     }
@@ -115,7 +120,7 @@ class AnthropicAgent implements ChatClient {
       throw new Error('Model name is required');
     }
     const messages = await this.anthropic.messages.create({
-      max_tokens: 1024,
+      max_tokens: 16384,
       messages: [
         {
           content: JSON.stringify({ value: items }),
@@ -150,6 +155,9 @@ class AnthropicAgent implements ChatClient {
       },
       system: await readFile(path.join(__dirname, 'skills/skprompt.txt'), 'utf-8')
     });
+    if (messages.stop_reason === 'max_tokens') {
+      throw new Error('The response was truncated because it exceeded the maximum number of tokens');
+    }
     const content = messages.content.find((item) => item.type === 'text');
     if (content == null) {
       throw new Error('No content in the response');

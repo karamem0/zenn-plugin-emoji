@@ -1,5 +1,9 @@
 # Changelog
 
+## [v0.9.1] - 2026-08-18
+
+- `max_tokens` パラメーターの修正
+
 ## [v0.9.0] - 2026-08-18
 
 - Anthropic (Claude) のサポート
