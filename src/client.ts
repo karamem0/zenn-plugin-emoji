@@ -12,7 +12,7 @@ import dotenv from 'dotenv';
 import { readFile } from 'fs/promises';
 import OpenAI, { AzureOpenAI } from 'openai';
 import path from 'path';
-import {
+import type {
   ChatClient,
   ChatRequestArray,
   ChatResponseArray
