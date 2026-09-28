@@ -153,14 +153,7 @@ export default defineConfig(
         'unix'
       ],
       'no-alert': 'error',
-      'no-console': [
-        'warn',
-        {
-          'allow': [
-            'error'
-          ]
-        }
-      ],
+      'no-console': 'off',
       'no-unused-vars': 'off',
       'no-use-before-define': 'off',
       'no-var': 'error',

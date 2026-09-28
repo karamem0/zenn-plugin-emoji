@@ -2,6 +2,7 @@
   "files.exclude": {
     "test/": true
   },
+  "eslint.format.enable": true,
   "[javascript]": {
     "editor.defaultFormatter": "dbaeumer.vscode-eslint"
   },
